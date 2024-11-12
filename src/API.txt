@@ -1,0 +1,9 @@
+1. Login API
+2. image Generate API
+3. Created Image list API
+4. fetch Profile API
+5. Create Profile API
+6. Download Image API
+7. Upscale Upload API
+8. Upscale Download API
+9. payment API
