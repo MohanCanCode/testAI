@@ -15,7 +15,7 @@ function App() {
       <SignedIn>
         <Sidebar />
       </SignedIn>
-      <div className="w-[1422px] h-screen text-white">
+      <div className="w-screen h-screen text-white overflow-x-hidden">
   <SignedOut>
     <div className="flex items-center justify-center h-full">
       <SignIn />

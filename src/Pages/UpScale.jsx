@@ -36,7 +36,7 @@ const Upscale = () => {
     : "bg-gray-300 text-gray-700 hover:bg-gray-200";
 
   return (
-    <div className={`${theme === "dark" ? "bg-black text-white" : "bg-white text-black"} flex h-[655px]`}>
+    <div className={`${theme === "dark" ? "bg-black text-white" : "bg-white text-black"} flex h-screen`}>
       <div className={`w-64 border-r ${theme === "dark" ? "border-gray-800" : "border-gray-300"}`}>
         <div className="p-6 space-y-6">
           <div className="space-y-4">
@@ -87,7 +87,7 @@ const Upscale = () => {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center space-y-4 p-4">
-        <div className="flex-1 flex items-center justify-center max-h-[80%]">
+        <div className="flex-1 flex items-center justify-center max-h-[50%] mt-[-100px]">
           {upscaledImage || selectedImage ? (
             <img
               src={upscaledImage || selectedImage}
