@@ -6,9 +6,11 @@ import  Upscale from './Pages/UpScale';
 import { SignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
 import PageLayout from './Pages/PageLayout';
 import SubscriptionScreen from './Pages/Payment';
+import { ThemeProvider } from './Context/ThemeContext';
 
 function App() {
   return (
+    <ThemeProvider>
     <div>
       <SignedIn>
         <Sidebar />
@@ -32,6 +34,7 @@ function App() {
 </div>
 
     </div>
+    </ThemeProvider>
   );
 }
 

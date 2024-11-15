@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import user from "../assets/user.png";
+import ThemeContext from '../Context/ThemeContext';
 
 const FaceProfiles = () => {
   const [profiles] = useState([
@@ -10,6 +11,7 @@ const FaceProfiles = () => {
   const [selectedProfileId, setSelectedProfileId] = useState(null);
   const [uploadedImages, setUploadedImages] = useState(Array(8).fill(null));
   const [newProfileName, setNewProfileName] = useState('');
+  const { theme } = useContext(ThemeContext);
 
   const handleSelectProfile = (id) => {
     setSelectedProfileId(id);
@@ -50,7 +52,7 @@ const FaceProfiles = () => {
   ];
 
   return (
-    <div className="p-8 bg-black text-white min-h-screen">
+    <div className={`p-8 min-h-screen ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
       <div className="mb-12 border-b border-gray-300 pb-6">
         <h2 className="text-purple-500 text-lg mb-6">My Face profiles:</h2>
         <div className="flex gap-4">
@@ -82,10 +84,10 @@ const FaceProfiles = () => {
       </div>
 
       <div>
-        <h2 className="text-white text-lg mb-6">Create a new Face profile:</h2>
+        <h2 className={`${theme === "dark" ? "bg-black text-white" : "bg-white text-black"} text-lg mb-6`}>Create a new Face profile:</h2>
 
         <div className="bg-zinc-900 p-4 rounded-lg mb-8">
-          <p className="mb-2">For optimal face swapping results:</p>
+          <p className="text-gray-300 mb-2">For optimal face swapping results:</p>
           <ul className="list-decimal pl-6">
             {uploadInstructions.map((instruction, index) => (
               <li key={index} className="text-sm text-gray-300 mb-1">{instruction}</li>

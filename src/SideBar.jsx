@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { ImageIcon, User2Icon, ArrowUpRightIcon, Moon, Sun } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import ThemeContext from "./Context/ThemeContext";
 
 const Sidebar = () => {
-  const [theme, setTheme] = useState("dark");
-
-  const handleToggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    localStorage.setItem("screen", newTheme);
-    document.body.classList.toggle("dark", newTheme === "dark");
-  };
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { user } = useUser();
+  const location = useLocation();
 
   const menuItems = [
     { icon: <ImageIcon size={20} />, text: "Imagine", path: "/", id: 1 },
     { icon: <User2Icon size={20} />, text: "Face Profiles", path: "/face-profiles", id: 2 },
     { icon: <ArrowUpRightIcon size={20} />, text: "Upscale", path: "/upscale", id: 3 },
   ];
-
-  const { user } = useUser();
-  const location = useLocation();
 
   return (
     <div className={`fixed inset-y-0 z-50 flex flex-col w-64 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
@@ -51,7 +44,7 @@ const Sidebar = () => {
 
       <div className={`p-6 border-t ${theme === "dark" ? "border-gray-800" : "border-gray-200"}`}>
         <div
-          onClick={handleToggleTheme}
+          onClick={toggleTheme}
           className="flex items-center gap-3 mb-4 cursor-pointer transition-colors"
         >
           {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
