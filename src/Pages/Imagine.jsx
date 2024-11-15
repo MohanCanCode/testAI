@@ -1,8 +1,119 @@
 import { ChevronDown, Download, RefreshCw, Search, Upload } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import CustomDropdown from "../Components/CustomDropDown";
 import PortraitPopup from "../Components/SwapPopup";
 import user from "../assets/user.png";
+
+const mockApi = {
+  // Recently made images
+  fetchRecentlyMade: () => {
+    return Promise.resolve({
+      status: "success",
+      data: [
+        {
+          id: 1,
+          url: "https://dummyimage.com/300",
+          title: "Latest Creation",
+          timestamp: "2024-11-14T10:30:00",
+          likes: 145
+        },
+        {
+          id: 2,
+          url: "https://dummyimage.com/300",
+          title: "New Project",
+          timestamp: "2024-11-13T15:20:00",
+          likes: 89
+        },
+        {
+          id: 1,
+          url: "https://dummyimage.com/300",
+          title: "Latest Creation",
+          timestamp: "2024-11-14T10:30:00",
+          likes: 145
+        },
+        {
+          id: 2,
+          url: "https://dummyimage.com/300",
+          title: "New Project",
+          timestamp: "2024-11-13T15:20:00",
+          likes: 89
+        },
+        {
+          id: 1,
+          url: "https://dummyimage.com/300",
+          title: "Latest Creation",
+          timestamp: "2024-11-14T10:30:00",
+          likes: 145
+        },
+        {
+          id: 2,
+          url: "https://dummyimage.com/300",
+          title: "New Project",
+          timestamp: "2024-11-13T15:20:00",
+          likes: 89
+        },
+        {
+          id: 1,
+          url: "https://dummyimage.com/300",
+          title: "Latest Creation",
+          timestamp: "2024-11-14T10:30:00",
+          likes: 145
+        },
+        {
+          id: 2,
+          url: "https://dummyimage.com/300",
+          title: "New Project",
+          timestamp: "2024-11-13T15:20:00",
+          likes: 89
+        }
+      ]
+    });
+  },
+  // Old to new images
+  fetchOldToNew: () => {
+    return Promise.resolve({
+      status: "success",
+      data: [
+        {
+          id: 3,
+          url: "https://dummyimage.com/300",
+          title: "First Project",
+          timestamp: "2024-01-10T09:15:00",
+          likes: 302
+        },
+        {
+          id: 4,
+          url: "https://dummyimage.com/300",
+          title: "Second Creation",
+          timestamp: "2024-02-08T14:45:00",
+          likes: 167
+        }
+      ]
+    });
+  },
+  // Most liked images
+  fetchMostLiked: () => {
+    return Promise.resolve({
+      status: "success",
+      data: [
+        {
+          id: 5,
+          url: "https://dummyimage.com/300",
+          title: "Popular Creation",
+          timestamp: "2024-03-15T11:30:00",
+          likes: 523
+        },
+        {
+          id: 6,
+          url: "https://dummyimage.com/300",
+          title: "Trending Project",
+          timestamp: "2024-04-20T16:45:00",
+          likes: 489
+        }
+      ]
+    });
+  }
+};
 
 const Imagine = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +121,50 @@ const Imagine = () => {
     aspectRatio: "3:4",
     model: "3:4",
   });
+  const [activeTab, setActiveTab] = useState('recently');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchImages = async (tab) => {
+    setLoading(true);
+    setError(null);
+    try {
+      let response;
+      switch (tab) {
+        case 'recently':
+          response = await mockApi.fetchRecentlyMade();
+          break;
+        case 'old':
+          response = await mockApi.fetchOldToNew();
+          break;
+        case 'likes':
+          response = await mockApi.fetchMostLiked();
+          break;
+        default:
+          response = await mockApi.fetchRecentlyMade();
+      }
+      setImages(response.data);
+    } catch (err) {
+      setError('Failed to fetch images. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchImages(activeTab);
+  }, [activeTab]);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const filteredImages = images.filter(image =>
+    image.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
   
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -125,16 +280,42 @@ const Imagine = () => {
         </div>
       </div>
 
+      <div className="p-6 bg-black min-h-screen">
       <div className="flex justify-between items-start">
         <div className="pt-4">
           <div className="flex items-center gap-6 mb-4">
             <h2 className="text-purple-500">My Creations :</h2>
             <nav className="flex gap-6">
-              <div className="text-white border-b-2 border-white pb-1">
+              <div
+                onClick={() => handleTabClick('recently')}
+                className={`pb-1 ${
+                  activeTab === 'recently'
+                    ? 'text-white border-b-2 border-white'
+                    : 'text-gray-500 hover:text-white'
+                }`}
+              >
                 Recently made
               </div>
-              <div className="text-gray-500 hover:text-white">Old to new</div>
-              <div className="text-gray-500 hover:text-white">Likes</div>
+              <div
+                onClick={() => handleTabClick('old')}
+                className={`pb-1 ${
+                  activeTab === 'old'
+                    ? 'text-white border-b-2 border-white'
+                    : 'text-gray-500 hover:text-white'
+                }`}
+              >
+                Old to new
+              </div>
+              <div
+                onClick={() => handleTabClick('likes')}
+                className={`pb-1 ${
+                  activeTab === 'likes'
+                    ? 'text-white border-b-2 border-white'
+                    : 'text-gray-500 hover:text-white'
+                }`}
+              >
+                Likes
+              </div>
             </nav>
           </div>
         </div>
@@ -144,11 +325,30 @@ const Imagine = () => {
             <input
               type="text"
               placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-transparent border border-gray-800 rounded-full px-10 py-2 focus:outline-none focus:border-purple-500"
             />
           </div>
         </div>
       </div>
+
+      <div className="grid grid-cols-4 gap-4 mt-8">
+        {filteredImages.map((image) => (
+          <div key={image.id} className="relative group">
+            <img
+              src={image.url}
+              alt={image.title}
+              className="w-full h-48 object-cover rounded-lg"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity">
+              <h3 className="text-white text-sm font-medium">{image.title}</h3>
+              <p className="text-gray-300 text-xs">❤️ {image.likes}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
     </div>
   );
 };
