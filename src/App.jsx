@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Sidebar from './SideBar';
 import Imagine from './Pages/Imagine';
 import  FaceProfiles from './Pages/FaceProfiles';
-import { Upscale } from './Pages/UpScale';
+import  Upscale from './Pages/UpScale';
 import { SignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
 import PageLayout from './Pages/PageLayout';
 import SubscriptionScreen from './Pages/Payment';
